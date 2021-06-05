@@ -26,7 +26,10 @@
 
     <small class="form-text text-muted"><%= t('.we_need_your_current_password_to_confirm_your_changes') %></small>
   </div>
-
+  <div class="form-group">
+    <%= f.label :user_type %><br />
+    <%= f.select :user_type, %w[user team stock], selected:'user', class: 'form-control' %>
+  </div>
   <div class="form-group">
     <%= f.submit t('.update'), class: 'btn btn-primary' %>
   </div>

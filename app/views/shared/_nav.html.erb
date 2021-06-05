@@ -1,0 +1,31 @@
+<div class="header header-fixed">
+  <div class="navbar container">
+    <div class="logo"><a href="#home">Powergate</a></div>
+    <input type="checkbox" id="navbar-toggle" >
+    <label for="navbar-toggle"><i></i></label>
+    <nav class="menu">
+      <ul>
+        <% if user_signed_in? %>
+          <li>
+            <%= link_to "Home", root_path %>
+          </li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contacts">Contacts</a></li>
+          <li>
+            <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+          </li>
+        <% else %>
+          <li><a href="#about">About</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contacts">Contacts</a></li>
+          <li>
+            <%= link_to "Sign in", new_user_session_path  %>
+          </li>
+        <% end %>
+
+
+      </ul>
+    </nav>
+  </div>
+</div>
