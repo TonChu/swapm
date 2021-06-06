@@ -5,7 +5,9 @@
       <div class="card-body">
         <h5 class="card-title card-title-shadow">User Wallet</h5>
         <p class="card-text">
-        <div><span>Balance: </span><strong>123$</strong><br><a href="">Transaction details...</a></div>
+        <div>
+          <span>Balance: </span><strong><%= @wallet.user_wallets.first[:balance] %></strong>
+          <br><%= link_to "Transaction details...", wallet_transactions_path(@wallet, role: "u")  %> </div>
         <hr>
         </p>
         <a href="#" class="btn btn-primary">Deposit</a>
@@ -19,7 +21,9 @@
       <div class="card-body">
         <h5 class="card-title card-title-shadow">Team Wallet</h5>
         <p class="card-text">
-        <div><span>Balance: </span><strong>123$</strong><br><a href="">Transaction details...</a></div>
+        <div>
+          <span>Balance: </span><strong><%= @wallet.team_wallets.first[:balance] %></strong><br>
+          <%= link_to "Transaction details...", wallet_transactions_path(@wallet, role: "t")  %></div>
         <hr>
         </p>
         <a href="#" class="btn btn-primary">Deposit</a>
@@ -33,7 +37,8 @@
       <div class="card-body">
         <h5 class="card-title card-title-shadow">Stock Wallet</h5>
         <p class="card-text">
-        <div><span>Balance: </span><strong>123$</strong><br><a href="">Transaction details...</a></div>
+        <div><span>Balance: </span><strong><%= @wallet.stock_wallets.first[:balance] %></strong><br>
+          <%= link_to "Transaction details...", wallet_transactions_path(@wallet, role: "s")  %></div>
         <hr>
         </p>
         <a href="#" class="btn btn-primary">Deposit</a>

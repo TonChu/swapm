@@ -1,5 +1,6 @@
 class WalletDetail < ApplicationRecord
   belongs_to :wallet
+  has_many :transactions
 
   self.inheritance_column = :role   #STI pattern using custom field name
   scope :user_wallets, -> {where(role:"UserWallet")}
