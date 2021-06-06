@@ -1,3 +1,6 @@
+<style>
+    select {appearance: auto !important;}
+</style>
 <h3 style="padding-bottom: 30px; text-transform: capitalize"><%= "#{@action} #{@name}"  %></h3>
 <div class="row justify-content-center" >
   <div class="col-md-4 col-lg-4">
@@ -6,6 +9,13 @@
         <label for="transaction_balance">Balance</label> <br>
         <input value="<%= @balance %>" readonly="readonly" class="form-control" type="number" name="transaction[balance]" id="transaction_balance"> <br>
       </div>
+      <%if @action == "Transfer" %>
+        <div class="form-group">
+          <%= form.label :receiver_id %><br />
+          <%= form.collection_select :receiver_id, @wallet_details, :id, :wallet_name, {prompt: "Select"}, autofocus:true, class: "form-control", id: "transaction_receiver_id" %>
+        </div>
+      <%end %>
+
       <div class="form-group">
         <%= form.label :amount %> <br>
         <%= form.number_field :amount, autofocus: true, class: 'form-control' %> <br>

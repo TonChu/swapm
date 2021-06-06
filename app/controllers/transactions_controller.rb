@@ -16,17 +16,15 @@ class TransactionsController < ApplicationController
     @wallet = Wallet.find(params[:wallet_id]);
     @name = get_wallet_name params[:role]
     @balance = get_wallet_balance(params[:role], @wallet)
-
+    @transaction = Transaction.new
+    @wallet_details = @wallet.wallet_details;
     case params[:tran_type]
     when 'deposit'
-      @transaction = Transaction.new
       @action = "Deposit"
-      render :new
     when 'withdraw'
-      @transaction = Transaction.new
       @action = "Withdraw"
-      render :new
     when 'transfer'
+      @action = "Transfer"
     end
   end
 
@@ -55,11 +53,23 @@ class TransactionsController < ApplicationController
             @wallet_detail.update(:balance => @wallet_detail.balance - params[:transaction][:amount].to_i)
           end
         end
-
       end
 
       redirect_to wallets_path
     when 'transfer'
+      @action = "Transfer"
+      ActiveRecord::Base.transaction do
+        if(@wallet_detail.balance - params[:transaction][:amount].to_i >= 0)
+          @transaction = Transaction.new(:amount => params[:transaction][:amount],:description => params[:transaction][:description],:sender_id => @wallet_detail[:id],:receiver_id => params[:transaction][:receiver_id], :transaction_type => @action)
+          if @transaction.save
+            @wallet_detail.update(:balance => @wallet_detail.balance - params[:transaction][:amount].to_i)
+            @receiver_wallet_detail = WalletDetail.find(params[:transaction][:receiver_id])
+            @receiver_wallet_detail.update(:balance => @receiver_wallet_detail.balance + params[:transaction][:amount].to_i)
+          end
+        end
+      end
+
+      redirect_to wallets_path
     end
   end
 

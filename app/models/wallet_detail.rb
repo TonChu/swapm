@@ -13,4 +13,9 @@ class WalletDetail < ApplicationRecord
     %w(UserWallet TeamWallet StockWallet)
   end
 
+  def wallet_name
+    [self.wallet.title, self.role].join('- ')
+  end
+
+
 end
