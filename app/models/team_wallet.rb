@@ -1,0 +1,3 @@
+class TeamWallet < WalletDetail
+
+end

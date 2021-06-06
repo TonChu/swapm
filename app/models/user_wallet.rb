@@ -1,0 +1,3 @@
+class UserWallet < WalletDetail
+
+end

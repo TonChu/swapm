@@ -114,7 +114,13 @@ body {
 .header #navbar-toggle:checked ~ label:not(.steps) i:after {
   top: 0;
 }
-
+.card-title-shadow {
+  background-color: #ff932b;
+  padding: 5px;
+  border: solid 3px #ece8bd;
+  color: white;
+  text-align: center;
+}
 @media (max-width: 768px) {
   .navbar nav {
     visibility: hidden;

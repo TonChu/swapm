@@ -28,7 +28,7 @@
   </div>
   <div class="form-group">
     <%= f.label :user_type %><br />
-    <%= f.select :user_type, %w[user team stock], selected:'user', class: 'form-control' %>
+    <%= f.select :user_type, %w[user admin], selected:'user', class: 'form-control' %>
   </div>
   <div class="form-group">
     <%= f.submit t('.update'), class: 'btn btn-primary' %>
