@@ -6,13 +6,13 @@
         <h5 class="card-title card-title-shadow">User Wallet</h5>
         <p class="card-text">
         <div>
-          <span>Balance: </span><strong><%= @wallet.user_wallets.first[:balance] %></strong>
+          <span>Balance: </span><strong><%=number_to_currency  @wallet.user_wallets.first[:balance] %></strong>
           <br><%= link_to "Transaction details...", wallet_transactions_path(@wallet, role: "u")  %> </div>
         <hr>
         </p>
-        <a href="#" class="btn btn-primary">Deposit</a>
-        <a href="#" class="btn btn-primary">Transfer</a>
-        <a href="#" class="btn btn-primary">Withdraw</a>
+        <%= link_to "Deposit", new_wallet_transaction_path(@wallet, role: "u", tran_type: "deposit"), :class => "btn btn-primary"  %>
+        <%= link_to "Transfer", new_wallet_transaction_path(@wallet, role: "u", tran_type: "transfer"), :class => "btn btn-primary"  %>
+        <%= link_to "Withdraw", new_wallet_transaction_path(@wallet, role: "u", tran_type: "withdraw"), :class => "btn btn-primary"  %>
       </div>
     </div>
   </div>
@@ -22,13 +22,13 @@
         <h5 class="card-title card-title-shadow">Team Wallet</h5>
         <p class="card-text">
         <div>
-          <span>Balance: </span><strong><%= @wallet.team_wallets.first[:balance] %></strong><br>
+          <span>Balance: </span><strong><%=number_to_currency  @wallet.team_wallets.first[:balance] %></strong><br>
           <%= link_to "Transaction details...", wallet_transactions_path(@wallet, role: "t")  %></div>
         <hr>
         </p>
-        <a href="#" class="btn btn-primary">Deposit</a>
-        <a href="#" class="btn btn-primary">Transfer</a>
-        <a href="#" class="btn btn-primary">Withdraw</a>
+        <%= link_to "Deposit", new_wallet_transaction_path(@wallet, role: "t", tran_type: "deposit"), :class => "btn btn-primary"  %>
+        <%= link_to "Transfer", new_wallet_transaction_path(@wallet, role: "t", tran_type: "transfer"), :class => "btn btn-primary"  %>
+        <%= link_to "Withdraw", new_wallet_transaction_path(@wallet, role: "t", tran_type: "withdraw"), :class => "btn btn-primary"  %>
       </div>
     </div>
   </div>
@@ -37,13 +37,13 @@
       <div class="card-body">
         <h5 class="card-title card-title-shadow">Stock Wallet</h5>
         <p class="card-text">
-        <div><span>Balance: </span><strong><%= @wallet.stock_wallets.first[:balance] %></strong><br>
+        <div><span>Balance: </span><strong><%=number_to_currency  @wallet.stock_wallets.first[:balance] %></strong><br>
           <%= link_to "Transaction details...", wallet_transactions_path(@wallet, role: "s")  %></div>
         <hr>
         </p>
-        <a href="#" class="btn btn-primary">Deposit</a>
-        <a href="#" class="btn btn-primary">Transfer</a>
-        <a href="#" class="btn btn-primary">Withdraw</a>
+        <%= link_to "Deposit", new_wallet_transaction_path(@wallet, role: "s", tran_type: "deposit"), :class => "btn btn-primary"  %>
+        <%= link_to "Transfer", new_wallet_transaction_path(@wallet, role: "s", tran_type: "transfer"), :class => "btn btn-primary"  %>
+        <%= link_to "Withdraw", new_wallet_transaction_path(@wallet, role: "s", tran_type: "withdraw"), :class => "btn btn-primary"  %>
       </div>
     </div>
   </div>

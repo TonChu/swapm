@@ -1,0 +1,30 @@
+<h3 style="padding-bottom: 30px; text-transform: capitalize"><%= "#{@action} #{@name}"  %></h3>
+<div class="row justify-content-center" >
+  <div class="col-md-4 col-lg-4">
+    <%= form_with model: [@wallet, @transaction] do |form| %>
+      <div class="form-group">
+        <label for="transaction_balance">Balance</label> <br>
+        <input value="<%= @balance %>" readonly="readonly" class="form-control" type="number" name="transaction[balance]" id="transaction_balance"> <br>
+      </div>
+      <div class="form-group">
+        <%= form.label :amount %> <br>
+        <%= form.number_field :amount, autofocus: true, class: 'form-control' %> <br>
+        <% @transaction.errors.full_messages_for(:amount).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+      <div>
+        <%= form.label :description %> <br>
+        <%= form.text_area :description, class: 'form-control'%> <br>
+        <% @transaction.errors.full_messages_for(:description).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+      <div>
+        <%= form.hidden_field "role", value: params[:role] %>
+        <%= form.hidden_field "tran_type", value: params[:tran_type] %>
+        <%= form.submit value:@action, class: 'form-control btn btn-primary rounded submit px-3'%>
+      </div>
+    <%end %>
+  </div>
+</div>
