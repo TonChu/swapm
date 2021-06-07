@@ -13,12 +13,14 @@ class TransactionsController < ApplicationController
   end
 
   def new
-    @wallet = Wallet.find(params[:wallet_id]);
-    @name = get_wallet_name params[:role]
-    @balance = get_wallet_balance(params[:role], @wallet)
+    @wallet = Wallet.find(params[:wallet_id])
+    @role = params[:role]
+    @tran_type = params[:tran_type]
+    @name = get_wallet_name @role
+    @balance = get_wallet_balance(@role, @wallet)
     @transaction = Transaction.new
-    @wallet_details = @wallet.wallet_details;
-    case params[:tran_type]
+    @wallet_details = @wallet.wallet_details
+    case @tran_type
     when 'deposit'
       @action = "Deposit"
     when 'withdraw'
@@ -29,47 +31,60 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    @wallet = Wallet.find(params[:wallet_id]);
-    @name = get_wallet_name params[:transaction][:role]
-    @wallet_detail = get_wallet_detail(params[:transaction][:role], @wallet)
+    @wallet = Wallet.find(params[:wallet_id])
+    @role = params[:transaction][:role]
+    @tran_type = params[:transaction][:tran_type]
+    @name = get_wallet_name @role
+    @wallet_detail = get_wallet_detail(@role, @wallet)
+    @balance = get_wallet_balance(@role, @wallet)
 
-    case params[:transaction][:tran_type]
+    case @tran_type
     when 'deposit'
       @action = "Deposit"
-      ActiveRecord::Base.transaction do
-        @transaction = Transaction.new(:amount => params[:transaction][:amount],:description => params[:transaction][:description],:sender_id => @wallet_detail[:id],:receiver_id => @wallet_detail[:id], :transaction_type => @action)
-        if @transaction.save
-          @wallet_detail.update(:balance => @wallet_detail.balance + params[:transaction][:amount].to_i)
-        end
+      @transaction = Transaction.new(:amount => params[:transaction][:amount],:description => params[:transaction][:description],:sender_id => @wallet_detail[:id],:receiver_id => @wallet_detail[:id], :transaction_type => @action)
+      if @transaction.save
+        @wallet_detail.update(:balance => @wallet_detail.balance + params[:transaction][:amount].to_i)
+        redirect_to wallets_path
+      else
+        render :new
       end
 
-      redirect_to wallets_path
     when 'withdraw'
       @action = "Withdraw"
-      ActiveRecord::Base.transaction do
-        if(@wallet_detail.balance - params[:transaction][:amount].to_i >= 0)
-          @transaction = Transaction.new(:amount => params[:transaction][:amount],:description => params[:transaction][:description],:sender_id => @wallet_detail[:id],:receiver_id => @wallet_detail[:id], :transaction_type => @action)
-          if @transaction.save
-            @wallet_detail.update(:balance => @wallet_detail.balance - params[:transaction][:amount].to_i)
-          end
+      @transaction = Transaction.new(:amount => params[:transaction][:amount],:description => params[:transaction][:description],:sender_id => @wallet_detail[:id],:receiver_id => @wallet_detail[:id], :transaction_type => @action)
+      if(@wallet_detail.balance - params[:transaction][:amount].to_i >= 0)
+        if @transaction.save
+          @wallet_detail.update(:balance => @wallet_detail.balance - params[:transaction][:amount].to_i)
+          redirect_to wallets_path
+        else
+          render :new
         end
+      else
+        render :new
       end
 
-      redirect_to wallets_path
     when 'transfer'
       @action = "Transfer"
-      ActiveRecord::Base.transaction do
-        if(@wallet_detail.balance - params[:transaction][:amount].to_i >= 0)
-          @transaction = Transaction.new(:amount => params[:transaction][:amount],:description => params[:transaction][:description],:sender_id => @wallet_detail[:id],:receiver_id => params[:transaction][:receiver_id], :transaction_type => @action)
-          if @transaction.save
-            @wallet_detail.update(:balance => @wallet_detail.balance - params[:transaction][:amount].to_i)
-            @receiver_wallet_detail = WalletDetail.find(params[:transaction][:receiver_id])
-            @receiver_wallet_detail.update(:balance => @receiver_wallet_detail.balance + params[:transaction][:amount].to_i)
+      @transaction = Transaction.new(:amount => params[:transaction][:amount],:description => params[:transaction][:description],:sender_id => @wallet_detail[:id],:receiver_id => params[:transaction][:receiver_id], :transaction_type => @action)
+      if(@wallet_detail.balance - params[:transaction][:amount].to_i >= 0)
+        if @transaction.save
+          @wallet_detail.update(:balance => @wallet_detail.balance - params[:transaction][:amount].to_i)
+          @receiver_wallet_detail = WalletDetail.find(params[:transaction][:receiver_id])
+          @receiver_wallet_detail.update(:balance => @receiver_wallet_detail.balance + params[:transaction][:amount].to_i)
+          redirect_to wallets_path
+        else
+          @wallet_details = @wallet.wallet_details;
+          if(params[:transaction][:receiver_id].empty?)
+            @transaction.errors.add(:receiver_id, :receiver_id, message: "is not selected")
           end
+          render :new
         end
+      else
+        @wallet_details = @wallet.wallet_details;
+        @transaction.errors.add(:amount, :amount, message: "is bigger than balance")
+        render :new
       end
 
-      redirect_to wallets_path
     end
   end
 

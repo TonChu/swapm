@@ -39,6 +39,4 @@ class WalletDetail < ApplicationRecord
     end
     balance_tmp
   end
-
-
 end

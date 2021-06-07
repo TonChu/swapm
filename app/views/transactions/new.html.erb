@@ -12,7 +12,10 @@
       <%if @action == "Transfer" %>
         <div class="form-group">
           <%= form.label :receiver_id %><br />
-          <%= form.collection_select :receiver_id, @wallet_details, :id, :wallet_name, {prompt: "Select"}, autofocus:true, class: "form-control", id: "transaction_receiver_id" %>
+          <%= form.collection_select :receiver_id, @wallet_details, :id, :wallet_name, {prompt: "Please select"}, autofocus:true, class: "form-control", id: "transaction_receiver_id" %>
+          <% @transaction.errors.full_messages_for(:receiver_id).each do |message| %>
+            <div style="color: crimson"><%= message %></div>
+          <% end %>
         </div>
       <%end %>
 
@@ -20,19 +23,19 @@
         <%= form.label :amount %> <br>
         <%= form.number_field :amount, autofocus: true, class: 'form-control' %> <br>
         <% @transaction.errors.full_messages_for(:amount).each do |message| %>
-          <div><%= message %></div>
+          <div style="color: crimson"><%= message %></div>
         <% end %>
       </div>
       <div>
         <%= form.label :description %> <br>
         <%= form.text_area :description, class: 'form-control'%> <br>
         <% @transaction.errors.full_messages_for(:description).each do |message| %>
-          <div><%= message %></div>
+          <div  style="color: crimson"><%= message %></div>
         <% end %>
       </div>
       <div>
-        <%= form.hidden_field "role", value: params[:role] %>
-        <%= form.hidden_field "tran_type", value: params[:tran_type] %>
+        <%= form.hidden_field "role", value: @role %>
+        <%= form.hidden_field "tran_type", value: @tran_type %>
         <%= form.submit value:@action, class: 'form-control btn btn-primary rounded submit px-3'%>
       </div>
     <%end %>
