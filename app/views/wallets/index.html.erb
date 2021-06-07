@@ -6,8 +6,9 @@
         <h5 class="card-title card-title-shadow">User Wallet</h5>
         <p class="card-text">
         <div>
-          <span>Balance: </span><strong><%=number_to_currency  @wallet.user_wallets.first[:balance] %></strong>
-          <br><%= link_to "Transaction details...", wallet_transactions_path(@wallet, role: "u")  %> </div>
+          <span>Wallet Balance: </span><strong><%=number_to_currency  @wallet.user_wallets.first[:balance] %></strong><br>
+          <span>Transaction Balance: </span><strong><%=number_to_currency  @wallet.user_wallets.first.balance_from_transactions %></strong><br>
+          <%= link_to "Transaction details...", wallet_transactions_path(@wallet, role: "u")  %> </div>
         <hr>
         </p>
         <%= link_to "Deposit", new_wallet_transaction_path(@wallet, role: "u", tran_type: "deposit"), :class => "btn btn-primary"  %>
@@ -22,7 +23,8 @@
         <h5 class="card-title card-title-shadow">Team Wallet</h5>
         <p class="card-text">
         <div>
-          <span>Balance: </span><strong><%=number_to_currency  @wallet.team_wallets.first[:balance] %></strong><br>
+          <span>Wallet Balance: </span><strong><%=number_to_currency  @wallet.team_wallets.first[:balance] %></strong><br>
+          <span>Transaction Balance: </span><strong><%=number_to_currency  @wallet.team_wallets.first.balance_from_transactions %></strong><br>
           <%= link_to "Transaction details...", wallet_transactions_path(@wallet, role: "t")  %></div>
         <hr>
         </p>
@@ -37,7 +39,9 @@
       <div class="card-body">
         <h5 class="card-title card-title-shadow">Stock Wallet</h5>
         <p class="card-text">
-        <div><span>Balance: </span><strong><%=number_to_currency  @wallet.stock_wallets.first[:balance] %></strong><br>
+        <div>
+          <span>Wallet Balance: </span><strong><%=number_to_currency  @wallet.stock_wallets.first[:balance] %></strong><br>
+          <span>Transaction Balance: </span><strong><%=number_to_currency  @wallet.stock_wallets.first.balance_from_transactions %></strong><br>
           <%= link_to "Transaction details...", wallet_transactions_path(@wallet, role: "s")  %></div>
         <hr>
         </p>
