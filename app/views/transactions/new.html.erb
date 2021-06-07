@@ -21,7 +21,7 @@
 
       <div class="form-group">
         <%= form.label :amount %> <br>
-        <%= form.number_field :amount, autofocus: true, class: 'form-control' %> <br>
+        <%= form.number_field :amount, autofocus: true, class: 'form-control', min:0 %> <br>
         <% @transaction.errors.full_messages_for(:amount).each do |message| %>
           <div style="color: crimson"><%= message %></div>
         <% end %>

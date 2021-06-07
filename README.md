@@ -16,7 +16,7 @@ Demo: https://cryptic-temple-53050.herokuapp.com/
  - Withdraw money
  - Wallet’s balance & Transaction balance
  - Display transaction history for their wallets
-
+ - Money is integer, decimal should be supported later
 ## Architecture
 
 - SwapM is structured based on MVC from the latest Rails
